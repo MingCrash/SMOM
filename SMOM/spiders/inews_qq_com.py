@@ -3,18 +3,19 @@ import re
 import json
 import scrapy
 import requests
-from cctv_OpinionMonitor2 import helper
-from cctv_OpinionMonitor2.items import CctvOpinionmonitor2Item
+from SMOM import helper
+from SMOM.items import SmomItem
 from scrapy.http import Request
 
 class InewsQqComSpider(scrapy.Spider):
     name = 'inews.qq.com'
+
     entry_point = {
-        '要闻': 'https://r.inews.qq.com/getQQNewsUnreadList?chlid=news_news_top&page=1&channelPosition=0&rtAd=1&devid=1099ffec2ca12181&qimei=1099ffec2ca12181&uid=1099ffec2ca12181&appver=27_android_5.7.90',
-        '推荐': 'https://r.inews.qq.com/getQQNewsUnreadList?chlid=news_news_recommend&page=1&channelPosition=2&rtAd=1&devid=1099ffec2ca12181&qimei=1099ffec2ca12181&uid=1099ffec2ca12181&appver=27_android_5.7.90',
-        '国际': 'https://r.inews.qq.com/getQQNewsUnreadList?chlid=news_news_world&page=1&channelPosition=9&rtAd=1&devid=1099ffec2ca12181&qimei=1099ffec2ca12181&uid=1099ffec2ca12181&appver=27_android_5.7.90',
-        '财经': 'https://r.inews.qq.com/getQQNewsUnreadList?chlid=news_news_finance&page=1&channelPosition=11&rtAd=1&devid=1099ffec2ca12181&qimei=1099ffec2ca12181&uid=1099ffec2ca12181&appver=27_android_5.7.90',
-        '新时代': 'https://r.inews.qq.com/getQQNewsUnreadList?chlid=news_news_19&page=1&channelPosition=16&rtAd=1&devid=1099ffec2ca12181&qimei=1099ffec2ca12181&uid=1099ffec2ca12181&appver=27_android_5.7.90',
+        '汽车': 'https://r.inews.qq.com/getQQNewsUnreadList?chlid=news_news_auto&page=1&channelPosition=12&rtAd=1&devid=1099ffec2ca12181&qimei=1099ffec2ca12181&uid=1099ffec2ca12181&appver=27_android_5.7.90',
+        # '推荐': 'https://r.inews.qq.com/getQQNewsUnreadList?chlid=news_news_recommend&page=1&channelPosition=2&rtAd=1&devid=1099ffec2ca12181&qimei=1099ffec2ca12181&uid=1099ffec2ca12181&appver=27_android_5.7.90',
+        # '国际': 'https://r.inews.qq.com/getQQNewsUnreadList?chlid=news_news_world&page=1&channelPosition=9&rtAd=1&devid=1099ffec2ca12181&qimei=1099ffec2ca12181&uid=1099ffec2ca12181&appver=27_android_5.7.90',
+        # '财经': 'https://r.inews.qq.com/getQQNewsUnreadList?chlid=news_news_finance&page=1&channelPosition=11&rtAd=1&devid=1099ffec2ca12181&qimei=1099ffec2ca12181&uid=1099ffec2ca12181&appver=27_android_5.7.90',
+        # '新时代': 'https://r.inews.qq.com/getQQNewsUnreadList?chlid=news_news_19&page=1&channelPosition=16&rtAd=1&devid=1099ffec2ca12181&qimei=1099ffec2ca12181&uid=1099ffec2ca12181&appver=27_android_5.7.90',
     }
 
     headers = {
@@ -49,16 +50,16 @@ class InewsQqComSpider(scrapy.Spider):
 
     def content_parse(self, response):
         date = response.meta['date'] if 'date' in response.meta.keys() else None
-        if date == None or len(date) == 0: return
-        try:
-            if helper.compare_time(date, self.limittime) < 0: return
-        except:
-            return
+        # if date == None or len(date) == 0: return
+        # try:
+        #     if helper.compare_time(date, self.limittime) < 0: return
+        # except:
+        #     return
 
         jsonbd = json.loads(response.text)
         if jsonbd == None or len(jsonbd) == 0: return
 
-        pipleitem = CctvOpinionmonitor2Item()
+        pipleitem = SmomItem()
 
         pipleitem['date'] = date
         pipleitem['id'] = response.meta['id'] if 'id' in response.meta.keys() else None
