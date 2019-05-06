@@ -41,4 +41,3 @@ class SmomItem(scrapy.Item):
     ID = scrapy.Field()  #
     Q1 = scrapy.Field()  # Q1 content 内容
     G1 = scrapy.Field()  # G1 editor 编辑者
-    G2 = scrapy.Field()  # G2 editor from 编辑者来源

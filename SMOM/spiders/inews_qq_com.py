@@ -2,7 +2,6 @@
 import re
 import json
 import scrapy
-import requests
 from SMOM import helper
 from SMOM.items import SmomItem
 from scrapy.http import Request
@@ -11,7 +10,7 @@ class InewsQqComSpider(scrapy.Spider):
     name = 'inews.qq.com'
 
     entry_point = {
-        '汽车': 'https://r.inews.qq.com/getQQNewsUnreadList?chlid=news_news_auto&page=1&channelPosition=12&rtAd=1&devid=1099ffec2ca12181&qimei=1099ffec2ca12181&uid=1099ffec2ca12181&appver=27_android_5.7.90',
+        '汽车': 'https://r.inews.qq.com/getQQNewsUnreadList?chlid=news_news_auto&page={}&channelPosition=12&rtAd=1&devid=1099ffec2ca12181&qimei=1099ffec2ca12181&uid=1099ffec2ca12181&appver=27_android_5.7.90',
         # '推荐': 'https://r.inews.qq.com/getQQNewsUnreadList?chlid=news_news_recommend&page=1&channelPosition=2&rtAd=1&devid=1099ffec2ca12181&qimei=1099ffec2ca12181&uid=1099ffec2ca12181&appver=27_android_5.7.90',
         # '国际': 'https://r.inews.qq.com/getQQNewsUnreadList?chlid=news_news_world&page=1&channelPosition=9&rtAd=1&devid=1099ffec2ca12181&qimei=1099ffec2ca12181&uid=1099ffec2ca12181&appver=27_android_5.7.90',
         # '财经': 'https://r.inews.qq.com/getQQNewsUnreadList?chlid=news_news_finance&page=1&channelPosition=11&rtAd=1&devid=1099ffec2ca12181&qimei=1099ffec2ca12181&uid=1099ffec2ca12181&appver=27_android_5.7.90',
@@ -27,7 +26,8 @@ class InewsQqComSpider(scrapy.Spider):
 
     def start_requests(self):
         for key in self.entry_point.keys():
-            yield Request(url=self.entry_point[key], callback=self.parse, headers=self.headers, dont_filter=True)
+            for i in range(1,4):
+                yield Request(url=self.entry_point[key].format(i), callback=self.parse, headers=self.headers, dont_filter=True)
 
     def parse(self, response):
         jsonbd = json.loads(response.text)
@@ -49,43 +49,43 @@ class InewsQqComSpider(scrapy.Spider):
                                 'source': source})
 
     def content_parse(self, response):
-        date = response.meta['date'] if 'date' in response.meta.keys() else None
-        # if date == None or len(date) == 0: return
-        # try:
-        #     if helper.compare_time(date, self.limittime) < 0: return
-        # except:
-        #     return
-
         jsonbd = json.loads(response.text)
         if jsonbd == None or len(jsonbd) == 0: return
 
         pipleitem = SmomItem()
 
-        pipleitem['date'] = date
-        pipleitem['id'] = response.meta['id'] if 'id' in response.meta.keys() else None
-        pipleitem['url'] = response.url
-        pipleitem['title'] = response.meta['title'] if 'title' in response.meta.keys() else None
-        pipleitem['source'] = response.meta['source'] if 'source' in response.meta.keys() else None
-        pipleitem['editor'] = jsonbd['content']['cms_editor'] if 'cms_editor' in jsonbd['content'].keys() else None
-        pipleitem['content'] = helper.list2str(re.findall('>(.*?)<', jsonbd['content']['text'])) if 'text' in jsonbd[
+        pipleitem['S0'] = response.meta['id'] if 'id' in response.meta.keys() else None
+        pipleitem['S1'] = response.url
+        pipleitem['S2'] = response.meta['source'] if 'source' in response.meta.keys() else None
+        pipleitem['S3a'] = '文章评论类'
+        pipleitem['S3d'] = None
+        pipleitem['S4'] = response.meta['title'] if 'title' in response.meta.keys() else None
+        pipleitem['S5'] = helper.get_localtimestamp()
+        pipleitem['S6'] = response.meta['date'] if 'date' in response.meta.keys() else None
+        pipleitem['S7'] = '腾讯新闻'
+        pipleitem['S9'] = '1'
+        pipleitem['S10'] = None
+        pipleitem['S11'] = response.meta['read_count'] if 'read_count' in response.meta.keys() else None
+        pipleitem['S12'] = response.meta['comment_count'] if 'comment_count' in response.meta.keys() else None
+        pipleitem['S13'] = response.meta['likes_count'] if 'likes_count' in response.meta.keys() else None
+        pipleitem['ID'] = response.meta['id'] if 'id' in response.meta.keys() else None
+        pipleitem['G1'] = jsonbd['content']['cms_editor'] if 'cms_editor' in jsonbd['content'].keys() else None
+        pipleitem['Q1'] = helper.list2str(re.findall('>(.*?)<', jsonbd['content']['text'])) if 'text' in jsonbd[
             'content'].keys() else None
 
-        imglist = []
-        videolist = []
-        if 'attribute' in jsonbd.keys() and len(jsonbd['attribute']) != 0:
-            for item in jsonbd['attribute'].keys():
-                if re.search('VIDEO', item):
-                    videolist.append(jsonbd['attribute'][item]['playurl'])
-                if re.search('IMG', item):
-                    imglist.append(jsonbd['attribute'][item]['url'])
+        # imglist = []
+        # videolist = []
+        # if 'attribute' in jsonbd.keys() and len(jsonbd['attribute']) != 0:
+        #     for item in jsonbd['attribute'].keys():
+        #         if re.search('VIDEO', item):
+        #             videolist.append(jsonbd['attribute'][item]['playurl'])
+        #         if re.search('IMG', item):
+        #             imglist.append(jsonbd['attribute'][item]['url'])
+        #
+        # pipleitem['image_urls'] = helper.list2str(imglist)
+        # pipleitem['video_urls'] = helper.list2str(videolist)
 
-        pipleitem['image_urls'] = helper.list2str(imglist)
-        pipleitem['video_urls'] = helper.list2str(videolist)
-        pipleitem['share'] = None
-        pipleitem['like'] = response.meta['likes_count'] if 'likes_count' in response.meta.keys() else None
-        pipleitem['dislike'] = None
-        pipleitem['views'] = response.meta['read_count'] if 'read_count' in response.meta.keys() else None
-        pipleitem['comment'] = response.meta['comment_count'] if 'comment_count' in response.meta.keys() else None
-        pipleitem['crawl_time'] = helper.get_localtimestamp()
+        # pipleitem['share'] = None
+        # pipleitem['dislike'] = None
 
         return pipleitem
