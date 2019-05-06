@@ -29,7 +29,7 @@ class SmomItem(scrapy.Item):
     S2 = scrapy.Field()  # S2 source 意见的来源
     S3a = scrapy.Field()  # S3a type 文章评论类
     S3d = scrapy.Field()  # S3d natvigate 导航条
-    S4 = scrapy.Field()  # S4 title
+    S4 = scrapy.Field()  # S4 title 标题
     S5 = scrapy.Field()  # S5 crawl_time 抓取时间
     S6 = scrapy.Field()  # S6  date  日期
     S7 = scrapy.Field()  # S7 platform 平台 PC&APP
