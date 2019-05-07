@@ -7,14 +7,10 @@ from SMOM.items import SmomItem
 from scrapy.http import Request
 
 class InewsQqComSpider(scrapy.Spider):
-    name = 'inews.qq.com'
+    name = 'app.newsqq.com'
 
     entry_point = {
         '汽车': 'https://r.inews.qq.com/getQQNewsUnreadList?chlid=news_news_auto&page={}&channelPosition=12&rtAd=1&devid=1099ffec2ca12181&qimei=1099ffec2ca12181&uid=1099ffec2ca12181&appver=27_android_5.7.90',
-        # '推荐': 'https://r.inews.qq.com/getQQNewsUnreadList?chlid=news_news_recommend&page=1&channelPosition=2&rtAd=1&devid=1099ffec2ca12181&qimei=1099ffec2ca12181&uid=1099ffec2ca12181&appver=27_android_5.7.90',
-        # '国际': 'https://r.inews.qq.com/getQQNewsUnreadList?chlid=news_news_world&page=1&channelPosition=9&rtAd=1&devid=1099ffec2ca12181&qimei=1099ffec2ca12181&uid=1099ffec2ca12181&appver=27_android_5.7.90',
-        # '财经': 'https://r.inews.qq.com/getQQNewsUnreadList?chlid=news_news_finance&page=1&channelPosition=11&rtAd=1&devid=1099ffec2ca12181&qimei=1099ffec2ca12181&uid=1099ffec2ca12181&appver=27_android_5.7.90',
-        # '新时代': 'https://r.inews.qq.com/getQQNewsUnreadList?chlid=news_news_19&page=1&channelPosition=16&rtAd=1&devid=1099ffec2ca12181&qimei=1099ffec2ca12181&uid=1099ffec2ca12181&appver=27_android_5.7.90',
     }
 
     headers = {
