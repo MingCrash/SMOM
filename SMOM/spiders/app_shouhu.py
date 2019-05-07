@@ -2,7 +2,6 @@
 import re
 import json
 import scrapy
-import requests
 from SMOM import helper
 from SMOM.items import SmomItem
 from scrapy.http import Request
@@ -51,36 +50,6 @@ class AppShouhuSpider(scrapy.Spider):
             url = 'https://api.k.sohu.com/api/news/v5/article.go?newsId={}&channelId=1&p1=NjUwOTMxNTExMjU1NjczNjUzOA%3D%3D&rt=json'.format(item['newsId'])
             yield Request(url=url, callback=self.content_parse, headers=self.headers,meta={'commentNum': commentNum, 'readCount': readCount})
 
-    def tuijian_parse(self, response):
-        jsonbd = json.loads(response.text)
-        if len(jsonbd['recommendArticles']) == 0: return
-        for item in jsonbd['recommendArticles']:
-            if 'newsId' not in item.keys() or len(str(item['newsId'])) == 0: continue
-            commentNum = item['commentNum'] if 'commentNum' in item.keys() else None
-            readCount = item['readCount'] if 'readCount' in item.keys() else None
-            # mediaName = item['mediaName'] if 'mediaName' in item.keys() else None
-            url = 'https://api.k.sohu.com/api/news/v5/article.go?newsId={}&channelId=13557&p1=NjUwOTMxNTExMjU1NjczNjUzOA%3D%3D&rt=json'.format(
-                item['newsId'])
-            yield Request(url=url, callback=self.content_parse, headers=self.headers,
-                          meta={'commentNum': commentNum, 'readCount': readCount})
-
-    def toutiao_parse(self, response):
-        itemlist = []
-        jsonbd = json.loads(response.text)
-        if len(jsonbd['recommendArticles']) == 0: return
-        for item in jsonbd['recommendArticles']:
-            itemlist.append(item)
-        for item in jsonbd['topArticles']:
-            itemlist.append(item)
-        for item in itemlist:
-            if 'newsId' not in item.keys(): continue
-            commentNum = item['commentNum'] if 'commentNum' in item.keys() else None
-            readCount = item['readCount'] if 'readCount' in item.keys() else None
-            # mediaName = item['mediaName'] if 'mediaName' in item.keys()  else None
-            url = 'https://api.k.sohu.com/api/news/v5/article.go?newsId={}&channelId=1&p1=NjUwOTMxNTExMjU1NjczNjUzOA%3D%3D&rt=json'.format(
-                item['newsId'])
-            # yield Request(url=url, callback=self.content_parse, headers=self.headers,
-            #               meta={'commentNum': commentNum, 'readCount': readCount})
 
     def content_parse(self, response):
         jsonbd = json.loads(response.text)
@@ -88,44 +57,29 @@ class AppShouhuSpider(scrapy.Spider):
 
         content = jsonbd['content'] if 'content' in jsonbd.keys() else None
 
-        pipleitem['S0'] = response.meta['id']
+        pipleitem['S0'] = jsonbd['newsId'] if 'newsId' in jsonbd.keys() else None
         pipleitem['S1'] = response.url
-        pipleitem['S2'] = response.meta['source']
+        pipleitem['S2'] = jsonbd['media']['mediaName'] if 'media' in jsonbd.keys() else None
         pipleitem['S3a'] = '文章评论类'
         pipleitem['S3d'] = None
-        pipleitem['S4'] = response.css('title::text').extract_first()
+        pipleitem['S4'] = jsonbd['title'] if 'title' in jsonbd.keys() else None
         pipleitem['S5'] = helper.get_localtimestamp()
-        pipleitem['S6'] = response.meta['date']
-        pipleitem['S7'] = '网易新闻APP'
+        pipleitem['S6'] = jsonbd['time'] if 'time' in jsonbd.keys() and len(jsonbd['time']) != 0 else None
+        pipleitem['S7'] = '搜狐新闻APP'
         pipleitem['S9'] = '1'
         pipleitem['S10'] = None
-        pipleitem['S11'] = None
-        pipleitem['S12'] = response.meta['comment_count'] if 'comment_count' in response.meta.keys() else None
-        pipleitem['S13'] = response.meta['replyCount']
-        pipleitem['ID'] = response.meta['id']
+        pipleitem['S11'] = response.meta['readCount']
+        pipleitem['S12'] = response.meta['commentNum']
+        pipleitem['S13'] = None
+        pipleitem['ID'] = jsonbd['newsId'] if 'newsId' in jsonbd.keys() else None
         pipleitem['G1'] = None
-        pipleitem['Q1'] = helper.list2str(response.xpath('string(//div[@id="endText"])').extract()).replace('\t', '')
+        pipleitem['Q1'] = helper.list2str(re.findall('>(.*?)<', content)) if content != None else None
 
-
-        pipleitem['date'] = jsonbd['time'] if 'time' in jsonbd.keys() and len(jsonbd['time']) != 0 else None
-        pipleitem['id'] = jsonbd['newsId'] if 'newsId' in jsonbd.keys() else None
-        pipleitem['url'] = response.url
-        pipleitem['title'] = jsonbd['title'] if 'title' in jsonbd.keys() else None
-        pipleitem['source'] = jsonbd['media']['mediaName'] if 'media' in jsonbd.keys() else None
-        pipleitem['editor'] = None
-        pipleitem['content'] = helper.list2str(re.findall('>(.*?)<', content)) if content != None else None
-
-        imagelist = []
-        for i in jsonbd['photos']:
-            if i['pic'] != None and len(i['pic']) != 0:
-                imagelist.append(i['pic'])
-        pipleitem['image_urls'] = helper.list2str(imagelist)
-        pipleitem['video_urls'] = None
-        pipleitem['share'] = None
-        pipleitem['like'] = None
-        pipleitem['dislike'] = None
-        pipleitem['views'] = response.meta['readCount']
-        pipleitem['comment'] = response.meta['commentNum']
-        pipleitem['crawl_time'] = helper.get_localtimestamp()
+        # imagelist = []
+        # for i in jsonbd['photos']:
+        #     if i['pic'] != None and len(i['pic']) != 0:
+        #         imagelist.append(i['pic'])
+        # pipleitem['image_urls'] = helper.list2str(imagelist)
+        # pipleitem['video_urls'] = None
 
         return pipleitem

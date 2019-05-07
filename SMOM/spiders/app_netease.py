@@ -100,7 +100,7 @@ class AppNeteaseSpider(scrapy.Spider):
         pipleitem['S1'] = response.url
         pipleitem['S2'] = response.meta['source']
         pipleitem['S3a'] = '文章评论类'
-        pipleitem['S3d'] = None
+        pipleitem['S3d'] = helper.list2str(response.xpath('string(//div[@class="post_crumb"])').extract())
         pipleitem['S4'] = response.css('title::text').extract_first()
         pipleitem['S5'] = helper.get_localtimestamp()
         pipleitem['S6'] = response.meta['date']
