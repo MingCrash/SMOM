@@ -28,7 +28,6 @@ class AppTimeWeeklySpider(scrapy.Spider):
             yield Request(url=self.entry_point[key], callback=self.parse, headers=self.headers,dont_filter=True)
 
     def parse(self, response):
-        itemlist = []
         jsonbd = json.loads(response.text)
         articleList = jsonbd['result']['articleList'] if 'result' in jsonbd.keys() and len(jsonbd['result']['articleList']) != 0 else None
         if articleList == None: return

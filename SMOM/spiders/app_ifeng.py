@@ -9,9 +9,6 @@ from scrapy.http import Request
 class AppIfengSpider(scrapy.Spider):
     name = 'app.ifeng'
     entry_point = {
-        # '新闻': 'https://api.k.sohu.com/api/channel/v6/news.go?p1=NjUwOTMxNTExMjU1NjczNjUzOA%3D%3D&channelId=960590&num=20&rt=json&net=wifi&from=channel&apiVersion=42&isMixStream=2',
-        # '推荐': 'https://api.k.sohu.com/api/channel/v6/news.go?p1=NjUwOTMxNTExMjU1NjczNjUzOA%3D%3D&channelId=13557&num=20&rt=json&net=wifi&from=channel&apiVersion=42&isMixStream=2',
-        # '头条': 'https://api.k.sohu.com/api/channel/v6/news.go?p1=NjUwOTMxNTExMjU1NjczNjUzOA%3D%3D&channelId=1&num=20&rt=json&net=wifi&from=channel&apiVersion=42&isMixStream=2'
         '汽车': 'https://api.iclient.ifeng.com/ClientNewsRegion?id=QC45,FOCUSQC45,SECNAVQC45&action=down&pullNum=1&choicename=&choicetype=null&gv=6.5.5&av=6.5.5&uid=A000009114F247&deviceid=A000009114F247&proid=ifengnews&os=android_27&df=androidphone&vt=5&screen=720x1356&publishid=6109&nw=wifi&loginid=&st=15571315182743&sn=a7fcf60b2589cafc87f1d232847dfee7'
     }
 
