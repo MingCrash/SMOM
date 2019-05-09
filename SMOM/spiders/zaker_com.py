@@ -7,6 +7,8 @@ from SMOM import helper
 from SMOM.items import SmomItem
 from scrapy.http import Request
 from pyquery import PyQuery as pq
+
+# ZAKER新闻APP
 class InewsQqComSpider(scrapy.Spider):
     name = 'myzaker.com'
 
@@ -61,7 +63,7 @@ class InewsQqComSpider(scrapy.Spider):
         pipleitem['S4'] = response.meta['title'] if 'title' in response.meta.keys() else None
         pipleitem['S5'] = helper.get_localtimestamp()
         pipleitem['S6'] = pub_time
-        pipleitem['S7'] = 'ZAKER新闻'
+        pipleitem['S7'] = 'ZAKER新闻APP'
         pipleitem['S9'] = '1'
         pipleitem['S10'] = None
         pipleitem['S11'] = None

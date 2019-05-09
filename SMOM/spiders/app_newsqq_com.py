@@ -6,6 +6,7 @@ from SMOM import helper
 from SMOM.items import SmomItem
 from scrapy.http import Request
 
+# 腾讯新闻APP
 class InewsQqComSpider(scrapy.Spider):
     name = 'app.newsqq.com'
 
@@ -58,7 +59,7 @@ class InewsQqComSpider(scrapy.Spider):
         pipleitem['S4'] = response.meta['title'] if 'title' in response.meta.keys() else None
         pipleitem['S5'] = helper.get_localtimestamp()
         pipleitem['S6'] = response.meta['date'] if 'date' in response.meta.keys() else None
-        pipleitem['S7'] = '腾讯新闻'
+        pipleitem['S7'] = '腾讯新闻APP'
         pipleitem['S9'] = '1'
         pipleitem['S10'] = None
         pipleitem['S11'] = response.meta['read_count'] if 'read_count' in response.meta.keys() else None

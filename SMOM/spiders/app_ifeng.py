@@ -6,6 +6,7 @@ from SMOM import helper
 from SMOM.items import SmomItem
 from scrapy.http import Request
 
+# 凤凰新闻APP
 class AppIfengSpider(scrapy.Spider):
     name = 'app.ifeng'
     entry_point = {

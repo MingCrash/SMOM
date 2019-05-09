@@ -6,6 +6,7 @@ from SMOM import helper
 from SMOM.items import SmomItem
 from scrapy.http import Request,FormRequest
 
+# 天天快报
 class AppCnewsQqSpider(scrapy.Spider):
     name = 'app.cnews.qq'
 

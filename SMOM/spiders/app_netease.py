@@ -59,6 +59,7 @@ from scrapy.http import Request
 # 'http://c.m.163.com/nc/article/list/T1414142214384/{}-20.html'
 # 需要headers
 
+# 网易新闻APP
 class AppNeteaseSpider(scrapy.Spider):
     name = 'app.netease'
     entry_point = {

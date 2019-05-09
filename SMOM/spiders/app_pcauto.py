@@ -8,6 +8,7 @@ from SMOM import helper
 from SMOM.items import SmomItem
 from scrapy.http import Request
 
+# 太平洋汽车APP
 class AppPcautoSpider(scrapy.Spider):
     name = 'app.pcauto'
     entry_point = {
