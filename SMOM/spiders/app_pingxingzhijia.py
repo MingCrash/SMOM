@@ -6,6 +6,8 @@ from SMOM import helper
 from SMOM.items import SmomItem
 from scrapy.http import Request
 
+
+# 平行之家APP
 class AppPingxingzhijiaSpider(scrapy.Spider):
     name = 'app.pingxingzhijia'
 

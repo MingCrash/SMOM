@@ -6,6 +6,7 @@ from SMOM import helper
 from SMOM.items import SmomItem
 from scrapy.http import Request
 
+# 时代财经APP
 class AppTimeWeeklySpider(scrapy.Spider):
     name = 'app.time_weekly'
 

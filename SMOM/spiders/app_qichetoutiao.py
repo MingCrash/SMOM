@@ -6,6 +6,7 @@ from SMOM import helper
 from SMOM.items import SmomItem
 from scrapy.http import Request
 
+# 车友头条APP
 class AppQichetoutiaoSpider(scrapy.Spider):
     name = 'app.qichetoutiao'
     entry_point = {

@@ -14,6 +14,8 @@ from scrapy.http import Request
 # comment# 'http://apiv2.sohu.com/api/comment/count?client_id=cyqemw6s1&topic_source_id=309925722|mp_309925722'
 # views# 'http://v2.sohu.com/public-api/articles/310314477/pv'
 
+
+# 搜狐新闻APP
 class AppShouhuSpider(scrapy.Spider):
     name = 'app.shouhu'
     entry_point = {

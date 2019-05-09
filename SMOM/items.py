@@ -9,21 +9,6 @@ import scrapy
 
 
 class SmomItem(scrapy.Item):
-    # id = scrapy.Field()
-    # url = scrapy.Field()
-    # title = scrapy.Field()
-    # date = scrapy.Field()
-    # source = scrapy.Field()
-    # editor = scrapy.Field()
-    # content = scrapy.Field()
-    # views = scrapy.Field()
-    # image_urls = scrapy.Field()
-    # video_urls = scrapy.Field()
-    # share = scrapy.Field()
-    # like = scrapy.Field()
-    # dislike = scrapy.Field()
-    # comment = scrapy.Field()
-    # crawl_time = scrapy.Field()
     S0 = scrapy.Field()  # S0 第一层的总ID
     S1 = scrapy.Field()  # S1 url 链接
     S2 = scrapy.Field()  # S2 source 意见的来源
