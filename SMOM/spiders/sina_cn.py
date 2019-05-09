@@ -42,8 +42,6 @@ class InewsQqComSpider(scrapy.Spider):
 
         doc = pq(response.text)
         if doc == None or len(doc) == 0: return
-        content = doc('#artCont').text().replace('\n','')
-
 
         pipleitem = SmomItem()
 
@@ -63,6 +61,6 @@ class InewsQqComSpider(scrapy.Spider):
         pipleitem['S13'] =  None
         pipleitem['ID'] = response.meta['id'] if 'id' in response.meta.keys() else None
         pipleitem['G1'] = response.meta['auther'] if 'auther' in response.meta.keys() else None
-        pipleitem['Q1'] = content
+        pipleitem['Q1'] = doc('#artCont').text().replace('\n','')
 
         return pipleitem
