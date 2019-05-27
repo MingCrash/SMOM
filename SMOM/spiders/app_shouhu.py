@@ -42,7 +42,9 @@ class AppShouhuSpider(scrapy.Spider):
         if len(jsonbd['recommendArticles']) == 0: return
         for item in jsonbd['recommendArticles']:
             itemlist.append(item)
-        for item in jsonbd['topArticles']:
+        for item in jsonbd['topArticles'] if 'topArticles' in jsonbd.keys() else []:
+            itemlist.append(item)
+        for item in jsonbd['trainArticles']['trainList'] if 'trainArticles' in jsonbd.keys() else []:
             itemlist.append(item)
         for item in itemlist:
             if 'newsId' not in item.keys(): continue

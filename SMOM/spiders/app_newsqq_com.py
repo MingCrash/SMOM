@@ -23,7 +23,7 @@ class InewsQqComSpider(scrapy.Spider):
 
     def start_requests(self):
         for key in self.entry_point.keys():
-            for i in range(1,4):
+            for i in range(1,16):
                 yield Request(url=self.entry_point[key].format(i), callback=self.parse, headers=self.headers, dont_filter=True)
 
     def parse(self, response):

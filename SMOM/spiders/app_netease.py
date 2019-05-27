@@ -76,7 +76,7 @@ class AppNeteaseSpider(scrapy.Spider):
 
     def start_requests(self):
         for key in self.entry_point.keys():
-            for i in range(4):
+            for i in range(16):
                 yield Request(url=self.entry_point[key].format(i*20), callback=self.parse, headers=self.headers,dont_filter=True)
 
     def parse(self, response):

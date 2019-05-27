@@ -45,7 +45,6 @@ class InewsQqComSpider(scrapy.Spider):
             yield Request(url=url, callback=self.content_parse, headers=self.headers,meta={'title': title,'ID':ID})
 
     def content_parse(self, response):
-
         doc = pq(response.text)
         if len(doc) == 0: return
 
